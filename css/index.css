@@ -5,7 +5,7 @@ body {
    font-family: 'Helvetica';
 }
 
-#forecastLabel {
+.labels {
    padding: 20px;
 }
 

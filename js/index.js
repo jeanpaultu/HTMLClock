@@ -34,9 +34,28 @@ function getTemp() {
    });
 }
 
+function getCity(position) {
+   var geocoder = new google.maps.Geocoder();
+   var loc = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+   geocoder.geocode({'latLng': loc}, function(resluts, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+         console.log(results);
+         if(results[1]) {
+            var address = results[0].formatted_address;
+            alert("address = " + address);
+         } else {
+            alert("no results");
+         }
+      } else {
+         alert("fail");
+      }
+   });
+}
+
 function getCoordinates(position) {
    console.log(position.coords.latitude);
    console.log(position.coords.longitude);
+   getCity(position);
    return position.coords.latitude + ',' + position.coords.longitude;
 }
 
