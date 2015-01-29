@@ -9,7 +9,7 @@ function getTime() {
 }
 
 function getTemp() {
-   $.getJSON('https://api.forecast.io/forecast/f20cf5043de9552fca19307b45e486f9/35.300399,-120.662362', function(data) {
+   $.getJSON('http://api.forecast.io/forecast/f20cf5043de9552fca19307b45e486f9/35.300399,-120.662362', function(data) {
       var label = data['daily']['summary'];
       console.log(label);
    });
