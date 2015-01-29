@@ -15,19 +15,17 @@ function getTemp() {
       navigator.geolocation.getCurrentPosition(getCity);
    }
 
-   $.ajax ({
-      url: weatherURL + '35.300399,-120.662362',
-      dataType: 'jsonp',
-      success: function(data) {
-         var label = data['daily']['data'][0]['summary'];
-         var icon = data['daily']['data'][0]['icon'];
-         var temp = data['daily']['data'][0]['temperatureMax'];
+   $.getJSON(weatherURL + '35.300399,-120.662362?callback=?', displayData);
+}
 
-         $("#forecastLabel").html(label);
-         $("#forecastIcon").attr("src", "img/"+icon+".png");
-         $("body").addClass(getTempClass(temp));
-      }
-   });
+function displayData(data) {
+   var label = data['daily']['data'][0]['summary'];
+   var icon = data['daily']['data'][0]['icon'];
+   var temp = data['daily']['data'][0]['temperatureMax'];
+
+   $("#forecastLabel").html(label);
+   $("#forecastIcon").attr("src", "img/"+icon+".png");
+   $("body").addClass(getTempClass(temp));
 }
 
 function getCity(position) {
