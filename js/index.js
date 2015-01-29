@@ -10,34 +10,33 @@ function getTime() {
 
 function getTemp() {
    var weatherURL = 'https://api.forecast.io/forecast/f20cf5043de9552fca19307b45e486f9/';
-   var latLon;
+   var latLon = '35.300399,-120.662362';
 
    if (navigator.geolocation) {
       latLon = navigator.geolocation.getCurrentPosition(getCoordinates);
-   }
-   else {
-      latLon = '35.300399,-120.662362';
    }
 
    $.ajax ({
       url: weatherURL + latLon,
       dataType: 'jsonp',
-      success: function(data) {
-         var label = data['daily']['data'][0]['summary'];
-         var icon = data['daily']['data'][0]['icon'];
-         var temp = data['daily']['data'][0]['temperatureMax'];
-
-         $("#forecastLabel").html(label);
-         $("#forecastIcon").attr("src", "img/"+icon+".png");
-         $("body").addClass(getTempClass(temp));
-      }
+      success: displayData
    });
+}
+
+function displayData(data) {
+   var label = data['daily']['data'][0]['summary'];
+   var icon = data['daily']['data'][0]['icon'];
+   var temp = data['daily']['data'][0]['temperatureMax'];
+
+   $("#forecastLabel").html(label);
+   $("#forecastIcon").attr("src", "img/"+icon+".png");
+   $("body").addClass(getTempClass(temp));
 }
 
 function getCity(position) {
    var geocoder = new google.maps.Geocoder();
    var loc = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-   geocoder.geocode({'latLng': loc}, function(resluts, status) {
+   geocoder.geocode({'latLng': loc}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
          console.log(results);
          if(results[1]) {
