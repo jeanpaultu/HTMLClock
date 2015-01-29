@@ -5,8 +5,13 @@ body {
    font-family: 'Helvetica';
 }
 
-.labels {
+#cityLabel {
+   font-weight: bold;
    padding: 20px;
+}
+
+#forecastLabel {
+   padding-bottom: 10px;
 }
 
 #clock {
