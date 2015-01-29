@@ -37,8 +37,8 @@ function getCity(position) {
       if (status == google.maps.GeocoderStatus.OK) {
          console.log(results);
          if(results[1]) {
-            var city = results[0][2].long_name;
-            var state = results[0][4].short_name;
+            var city = results[0].address_components[2].long_name;
+            var state = results[0].address_components[4].short_name;
             $("#cityLabel").html(city+", "+state);
          } 
       } 
