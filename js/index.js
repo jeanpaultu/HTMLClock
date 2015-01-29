@@ -20,7 +20,7 @@ function getTemp() {
    }
 
    $.ajax ({
-      url: weatherURL + '35.300399,-120.662362',
+      url: weatherURL + latLon,
       dataType: 'jsonp',
       success: function(data) {
          var label = data['daily']['data'][0]['summary'];
