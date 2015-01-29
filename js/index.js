@@ -10,27 +10,24 @@ function getTime() {
 
 function getTemp() {
    var weatherURL = 'https://api.forecast.io/forecast/f20cf5043de9552fca19307b45e486f9/';
-   var latLon = '35.300399,-120.662362';
 
    if (navigator.geolocation) {
-      latLon = navigator.geolocation.getCurrentPosition(getCoordinates);
+      navigator.geolocation.getCurrentPosition(getCity);
    }
 
    $.ajax ({
-      url: weatherURL + latLon,
+      url: weatherURL + '35.300399,-120.662362',
       dataType: 'jsonp',
-      success: displayData
+      success: function(data) {
+         var label = data['daily']['data'][0]['summary'];
+         var icon = data['daily']['data'][0]['icon'];
+         var temp = data['daily']['data'][0]['temperatureMax'];
+
+         $("#forecastLabel").html(label);
+         $("#forecastIcon").attr("src", "img/"+icon+".png");
+         $("body").addClass(getTempClass(temp));
+      }
    });
-}
-
-function displayData(data) {
-   var label = data['daily']['data'][0]['summary'];
-   var icon = data['daily']['data'][0]['icon'];
-   var temp = data['daily']['data'][0]['temperatureMax'];
-
-   $("#forecastLabel").html(label);
-   $("#forecastIcon").attr("src", "img/"+icon+".png");
-   $("body").addClass(getTempClass(temp));
 }
 
 function getCity(position) {
@@ -40,22 +37,12 @@ function getCity(position) {
       if (status == google.maps.GeocoderStatus.OK) {
          console.log(results);
          if(results[1]) {
-            var address = results[0].formatted_address;
-            alert("address = " + address);
-         } else {
-            alert("no results");
-         }
-      } else {
-         alert("fail");
-      }
+            var city = results[0][2].long_name;
+            var state = results[0][4].short_name;
+            $("#cityLabel").html(city+", "+state);
+         } 
+      } 
    });
-}
-
-function getCoordinates(position) {
-   console.log(position.coords.latitude);
-   console.log(position.coords.longitude);
-   getCity(position);
-   return position.coords.latitude + ',' + position.coords.longitude;
 }
 
 function getTempClass(temp) {
