@@ -1,9 +1,9 @@
 function getTime() {
    var d = new Date();
-   var hour = d.getHours();
+   var hour = d.getHours() <= 12 ? d.getHours() : d.getHours() - 12;
    var minutes = d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes();
    var seconds = d.getSeconds() < 10 ? "0" + d.getSeconds() : d.getSeconds();
-   var time = hour + ":" + minutes + ":" + seconds;
+   var time = hour + ":" + minutes + ":" + seconds + (d.getHours() < 12 ? " am" : " pm");
    document.getElementById("clock").innerHTML = time;
    setTimeout(getTime, 1000);
 }
@@ -66,14 +66,36 @@ function hideAlarmPopup() {
    $("#popup").addClass("hide");
 }
 
-function insertAlarm(time, alarmName) {
+function insertAlarm(time, alarmName, objectId) {
    var div = $("<div>");
-   div.addClass("flexable");
+   div.addClass("flexable alarmRow");
 
    div.append("<div class='alarm name'>" + alarmName + "</div>");
    div.append("<div class='alarm time'>" + time + "</div>");
+   div.append("<input type='button' class='button deletebtn' onclick='deleteAlarm(this.id)' value='Delete' id='" + objectId + "'/>")
 
    $("#alarms").append(div);
+}
+
+function deleteAlarm(objectId) {
+   var AlarmObject = Parse.Object.extend("Alarm");
+   var query = new Parse.Query(AlarmObject);
+
+   query.get(objectId, {
+      success: function(alarmObject) {
+         alarmObject.destroy({
+            success: function() {
+               $("#"+objectId).parent().remove();
+            },
+            error: function() {
+               alert("Could not delete the alarm!");
+            }
+         });
+      },
+      error: function(object, error) {
+         alert("Could not delete the alarm!");
+      }
+   });
 }
 
 function addAlarm() {
@@ -81,15 +103,16 @@ function addAlarm() {
    var mins = $("#mins option:selected").text();
    var ampm = $("#ampm option:selected").text();
    var alarmName = $("#alarmName").val();
-   var time = hours + ":" + mins + ampm;
+   var time = hours + ":" + mins + " " + ampm;
 
    var AlarmObject = Parse.Object.extend("Alarm");
    var alarmObject = new AlarmObject();
 
    alarmObject.save({"time": time,"alarmName": alarmName}, {
       success: function(object) {
-         insertAlarm(time, alarmName);
+         insertAlarm(time, alarmName, object.id);
          hideAlarmPopup();
+         $("#noAlarms").remove();
       }
     });
 }
@@ -101,9 +124,14 @@ function getAllAlarms() {
    var query = new Parse.Query(AlarmObject);
    query.find({
       success: function(results) {
-         for (var i = 0; i < results.length; i++) {
-            insertAlarm(results[i].get("time"), results[i].get("alarmName"));
+         if (results.length > 0) {
+            for (var i = 0; i < results.length; i++) 
+               insertAlarm(results[i].get("time"), results[i].get("alarmName"), results[i].id);
          }
+         else {
+            $("#alarms").append("<div id='noAlarms' class='flexable'>No Alarms Set</div>")
+         }
+         
       }
    })
 }
