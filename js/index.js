@@ -81,12 +81,14 @@ function addAlarm() {
    var mins = $("#mins option:selected").text();
    var ampm = $("#ampm option:selected").text();
    var alarmName = $("#alarmName").val();
+   var time = hours + ":" + mins + ampm;
+
    var AlarmObject = Parse.Object.extend("Alarm");
    var alarmObject = new AlarmObject();
 
    alarmObject.save({"time": time,"alarmName": alarmName}, {
       success: function(object) {
-         insertAlarm(hours + ":" + mins + ampm, alarmName);
+         insertAlarm(time, alarmName);
          hideAlarmPopup();
       }
     });
