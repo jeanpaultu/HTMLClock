@@ -107,10 +107,6 @@ function getAllAlarms() {
 }
 
 window.onload = function() {
-   getTime();
-   getTemp();
-   getAllAlarms();
-
    for (var hours = 1; hours <= 12; hours++) {
       $("#hours").append("<option>" + hours + "</option>");
    };
@@ -119,6 +115,10 @@ window.onload = function() {
 
       $("#mins").append("<option>" + (mins < 10 ? "0" + mins : mins) + "</option>");
    };
+
+   getTime();
+   getTemp();
+   getAllAlarms();
 }
 
 
