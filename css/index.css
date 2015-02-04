@@ -10,13 +10,18 @@ body {
    padding: 20px;
 }
 
-#forecastLabel {
+.forecast {
    padding-bottom: 10px;
 }
 
 #clock {
    font-size: 4em;
    font-weight: bold;
+}
+
+.alarm {
+   width: 50%;
+   display: inline-block;
 }
 
 .cold {

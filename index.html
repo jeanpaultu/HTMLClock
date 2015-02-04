@@ -3,6 +3,7 @@
    <head>
       <meta charset="UTF-8">
       <link rel="stylesheet" type="text/css" href="css/index.css">
+      <link rel="stylesheet" type="text/css" href="css/alarm.css">
       <title>Lab 4</title>
    </head>
    <body>
@@ -12,9 +13,38 @@
 
       <div id="cityLabel"></div>
       
-      <div id="forecastLabel"></div>
+      <div class="forecast" id="forecastLabel"></div>
 
-      <img id="forecastIcon"></img>
+      <img class="forecast" id="forecastIcon"></img>
+
+      <div id="alarmContainer">
+         <div id="alarmHeader" class="flexable">
+            <h2>Alarms</h2>
+            <input type="button" class="button" onclick="showAlarmPopup()" value="Add Alarm" />
+         </div>
+         <div id="alarms"></div>
+      </div>
+
+      <div id="mask" class="hide"></div>
+
+      <div id="popup" class="hide">
+         <h1>Add Alarm</h1>
+         <div id="timeContainer">
+            <select id="hours">
+            </select>
+            <select id="mins">
+            </select>
+            <select id="ampm">
+               <option>am</option>
+               <option>pm</option>
+            </select>
+         </div>
+         <input type="text" id="alarmName" placeholder="Alarm Name" />
+         <div class="flexable">
+            <input type="button" class="button" onclick="hideAlarmPopup()" value="Cancel" />
+            <input type="button" class="button" onclick="addAlarm()" value="Save Alarm" />
+         </div>
+      </div>
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
       <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>

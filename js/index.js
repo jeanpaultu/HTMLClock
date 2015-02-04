@@ -56,7 +56,63 @@ function getTempClass(temp) {
       return 'hot';
 }
 
+function showAlarmPopup() {
+   $("#mask").removeClass("hide");
+   $("#popup").removeClass("hide");
+}
+
+function hideAlarmPopup() {
+   $("#mask").addClass("hide");
+   $("#popup").addClass("hide");
+}
+
+function insertAlarm(hours, mins, ampm, alarmName) {
+   var div = $("<div>");
+   div.addClass("flexable");
+
+   div.append("<div class='alarm name'>" + alarmName + "</div>");
+   div.append("<div class='alarm time'>" + hours + ":" + mins + ampm + "</div>");
+
+   $("#alarms").append(div);
+}
+
+function addAlarm() {
+   var hours = $("#hours option:selected").text();
+   var mins = $("#mins option:selected").text();
+   var ampm = $("#ampm option:selected").text();
+   var alarmName = $("#alarmName").val();
+
+   insertAlarm(hours, mins, ampm, alarmName);
+   hideAlarmPopup();
+}
+
 window.onload = function() {
    getTime();
    getTemp();
+
+   for (var hours = 1; hours <= 12; hours++) {
+      $("#hours").append("<option>" + hours + "</option>");
+   };
+
+   for (var mins = 00; mins <= 59; mins++) {
+
+      $("#mins").append("<option>" + (mins < 10 ? "0" + mins : mins) + "</option>");
+   };
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
