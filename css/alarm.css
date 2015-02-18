@@ -42,6 +42,10 @@ h2 {
 #alarms {
 	margin-top:20px;
 }
+
+#loginContainer {
+	margin-top:20px;
+}
 /********** The black transparent mask when adding an alarm clock *********/
 #mask {
 	position:absolute;

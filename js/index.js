@@ -1,3 +1,45 @@
+// This is called with the results from from FB.getLoginStatus().
+function statusChangeCallback(response) {
+   console.log(response);
+   // The response object is returned with a status field that lets the
+   // app know the current login status of the person.
+   // Full docs on the response object can be found in the documentation
+   // for FB.getLoginStatus().
+   if (response.status === 'connected') {
+      // Logged into your app and Facebook.
+      FB.api('/me', function(response) {
+         console.log('Successful login for: ' + response.name + ' with id: ' + response.id);
+         $("#loginStatus").empty();
+         document.getElementById('loginStatus').innerHTML = '[Logged in as ' + response.name + ']';
+         $("#addAlarmBtn").show();
+         $("#loginContainer").hide();
+         getAllAlarms(response.id);
+      });
+   } else if (response.status === 'not_authorized') {
+      // The person is logged into Facebook, but not your app.
+      $("#loginStatus").empty();
+      document.getElementById('loginStatus').innerHTML = '[Not logged in]';
+      $("#addAlarmBtn").hide();
+      $("#loginContainer").show();
+   } else {
+      // The person is not logged into Facebook, so we're not sure if
+      // they are logged into this app or not.
+      $("#loginStatus").empty();
+      document.getElementById('loginStatus').innerHTML = '[Not logged in]';
+      $("#addAlarmBtn").hide();
+      $("#loginContainer").show();
+   }
+}
+
+// This function is called when someone finishes with the Login
+// Button.  See the onlogin handler attached to it in the sample
+// code below.
+function checkLoginState() {
+   FB.getLoginStatus(function(response) {
+   statusChangeCallback(response);
+   });
+}
+
 function getTime() {
    var d = new Date();
    var hour = d.getHours() <= 12 ? d.getHours() : d.getHours() - 12;
@@ -117,12 +159,12 @@ function addAlarm() {
 }
 
 function getAllAlarms(userID) {
-   console.log('getAllAlarms: ' + userID);
+   $("#alarms").empty();
    Parse.initialize("0Y4EPzSgC2NIELVKZ7MOLQVR2xcDDW8krI8JarGi", "joFkGrrXV5IcKKYc2FniZixY9gLazREExLaERkL0");
 
    var AlarmObject = Parse.Object.extend("Alarm");
    var query = new Parse.Query(AlarmObject);
-
+   query.equalTo("userID", userID);
    query.find({
       success: function(results) {
          if (results.length > 0) {
@@ -147,9 +189,10 @@ window.onload = function() {
       $("#mins").append("<option>" + (mins < 10 ? "0" + mins : mins) + "</option>");
    };
 
+   $("#addAlarmBtn").hide();
+
    getTime();
    getTemp();
-   //getAllAlarms();
 }
 
 
