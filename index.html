@@ -18,13 +18,13 @@
           if (response.status === 'connected') {
             // Logged into your app and Facebook.
             FB.api('/me', function(response) {
-               console.log('Successful login for: ' + response.name + ' with id: ' + response.userID);
+               console.log('Successful login for: ' + response.name + ' with id: ' + response.id);
                $("#loginStatus").empty();
                document.getElementById('loginStatus').innerHTML = '[Logged in as ' + response.name + ']';
-               $("#userId").value(response.userID);
+               $("#userId").value(response.id);
                $("#addAlarmBtn").show();
                $("#loginBtn").hide();
-               getAllAlarms(response.userID);
+               getAllAlarms(response.id);
             });
           } else if (response.status === 'not_authorized') {
             // The person is logged into Facebook, but not your app.
