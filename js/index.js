@@ -33,7 +33,6 @@ function getCity(position) {
    var loc = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
    geocoder.geocode({'latLng': loc}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
-         console.log(results);
          if(results[1]) {
             var city = results[0].address_components[2].long_name;
             var state = results[0].address_components[4].short_name;
@@ -118,11 +117,12 @@ function addAlarm() {
 }
 
 function getAllAlarms(userID) {
+   console.log(userID);
    Parse.initialize("0Y4EPzSgC2NIELVKZ7MOLQVR2xcDDW8krI8JarGi", "joFkGrrXV5IcKKYc2FniZixY9gLazREExLaERkL0");
 
    var AlarmObject = Parse.Object.extend("Alarm");
    var query = new Parse.Query(AlarmObject);
-   
+
    query.find({
       success: function(results) {
          if (results.length > 0) {

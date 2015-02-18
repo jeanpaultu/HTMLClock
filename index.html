@@ -10,7 +10,6 @@
       <script>
          // This is called with the results from from FB.getLoginStatus().
          function statusChangeCallback(response) {
-          console.log('statusChangeCallback');
           console.log(response);
           // The response object is returned with a status field that lets the
           // app know the current login status of the person.
@@ -19,25 +18,27 @@
           if (response.status === 'connected') {
             // Logged into your app and Facebook.
             FB.api('/me', function(response) {
-               console.log('Successful login for: ' + response.name);
+               console.log('Successful login for: ' + response.name + ' with id: ' + response.userID);
+               $("#loginStatus").empty();
                document.getElementById('loginStatus').innerHTML = '[Logged in as ' + response.name + ']';
-               $('#userId').value(response.userID);
-               $('#addAlarmBtn').show();
+               $("#userId").value(response.userID);
+               $("#addAlarmBtn").show();
+               $("#loginBtn").hide();
                getAllAlarms(response.userID);
             });
           } else if (response.status === 'not_authorized') {
             // The person is logged into Facebook, but not your app.
-            document.getElementById('status').innerHTML = 'Please log ' +
-              'into this app.';
-            $('#loginStatus').empty();
-            $('#addAlarmBtn').hide();
+            $("#loginStatus").empty();
+            document.getElementById('loginStatus').innerHTML = '[Not logged in]';
+            $("#addAlarmBtn").hide();
+            $("#loginBtn").show();
           } else {
             // The person is not logged into Facebook, so we're not sure if
             // they are logged into this app or not.
-            document.getElementById('status').innerHTML = 'Please log ' +
-              'into Facebook.';
-            $('#loginStatus').empty();
-            $('#addAlarmBtn').hide();
+            $("#loginStatus").empty();
+            document.getElementById('loginStatus').innerHTML = '[Not logged in]';
+            $("#addAlarmBtn").hide();
+            $("#loginBtn").show();
           }
          }
 
@@ -102,10 +103,10 @@
                <h2 style="display:inline-block;">Alarms </h2>
                <p id="loginStatus" style="display:inline"></p>
             </div>
-            <input type="button" class="button" onclick="showAlarmPopup()" id="addAlarmBtn" value="Add Alarm" style="display:none;"/>
+            <input type="button" class="button" onclick="showAlarmPopup()" id="addAlarmBtn" value="Add Alarm"/>
          </div>
 
-         <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+         <fb:login-button id="loginBtn" scope="public_profile,email" onlogin="checkLoginState();">
          </fb:login-button>
 
          <div id="status">
