@@ -21,9 +21,9 @@
                console.log('Successful login for: ' + response.name + ' with id: ' + response.id);
                $("#loginStatus").empty();
                document.getElementById('loginStatus').innerHTML = '[Logged in as ' + response.name + ']';
-               $("#userId").value(response.id);
                $("#addAlarmBtn").show();
                getAllAlarms(response.id);
+               console.log('done with this');
             });
           } else if (response.status === 'not_authorized') {
             // The person is logged into Facebook, but not your app.
@@ -105,8 +105,10 @@
             <input type="button" class="button" onclick="showAlarmPopup()" id="addAlarmBtn" value="Add Alarm"/>
          </div>
 
-         <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-         </fb:login-button>
+         <div id="loginContainer">
+            <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+            </fb:login-button>
+         </div>
 
          <div id="status">
          </div>
@@ -114,8 +116,6 @@
       </div>
 
       <div id="mask" class="hide"></div>
-
-      <input type="hidden" id="userId">
 
       <div id="popup" class="hide">
          <h2>Add Alarm</h2>
