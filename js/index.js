@@ -1,82 +1,3 @@
-var helper = (function() {
-  var BASE_API_PATH = 'plus/v1/';
-
-  return {
-    /**
-     * Hides the sign in button and starts the post-authorization operations.
-     *
-     * @param {Object} authResult An Object which contains the access token and
-     *   other authentication information.
-     */
-    onSignInCallback: function(authResult) {
-      gapi.client.load('plus','v1').then(function() {
-        if (authResult['access_token']) {
-          $('#authOps').show('slow');
-          $('#gConnect').hide();
-          helper.profile();
-        } else if (authResult['error']) {
-          // There was an error, which means the user is not signed in.
-          // As an example, you can handle by writing to the console:
-          console.log('There was an error: ' + authResult['error']);
-          $('#authResult').append('Logged out');
-          $('#authOps').hide('slow');
-          $('#gConnect').show();
-          $('#alarmHeading').empty();
-          $('#alarmHeading').append('<h2>Alarms</h2>');
-          $("#addAlarmBtn").hide();
-          $("#alarms").empty();
-        }
-        console.log('authResult', authResult);
-      });
-    },
-
-    /**
-     * Calls the OAuth2 endpoint to disconnect the app for the user.
-     */
-    disconnect: function() {
-      // Revoke the access token.
-      $.ajax({
-        type: 'GET',
-        url: 'https://accounts.google.com/o/oauth2/revoke?token=' +
-            gapi.auth.getToken().access_token,
-        async: false,
-        contentType: 'application/json',
-        dataType: 'jsonp',
-        success: function(result) {
-          console.log('revoke response: ' + result);
-          $('#authOps').hide();
-          $('#alarmHeading').empty();
-          $('#alarmHeading').append('<h2>Alarms</h2>');
-          $('#authResult').empty();
-          $('#gConnect').show();
-          $("#addAlarmBtn").addClass("hide");
-          $("#alarms").empty();
-        },
-        error: function(e) {
-          console.log(e);
-        }
-      });
-    },
-
-    /**
-     * Gets and renders the currently signed in user's profile data.
-     */
-    profile: function(){
-      gapi.client.plus.people.get({
-        'userId': 'me'
-      }).then(function(res) {
-        var profile = res.result;
-        $('#alarmHeading').empty();
-        $('#alarmHeading').append(
-            $("<h2>" + profile.displayName + "'s Alarms</h2>"));
-        $("#addAlarmBtn").removeClass("hide");
-        $("#userId").val(profile.id);
-        getAllAlarms(profile.id); 
-      });
-    }
-  };
-})();
-
 function getTime() {
    var d = new Date();
    var hour = d.getHours() <= 12 ? d.getHours() : d.getHours() - 12;
@@ -186,9 +107,8 @@ function addAlarm() {
 
    var AlarmObject = Parse.Object.extend("Alarm");
    var alarmObject = new AlarmObject();
-   var userId = $("#userId").val();
 
-   alarmObject.save({"time": time,"alarmName": alarmName,"userId":userId}, {
+   alarmObject.save({"time": time,"alarmName": alarmName}, {
       success: function(object) {
          insertAlarm(time, alarmName, object.id);
          hideAlarmPopup();
@@ -197,12 +117,12 @@ function addAlarm() {
     });
 }
 
-function getAllAlarms(id) {
+function getAllAlarms() {
    Parse.initialize("0Y4EPzSgC2NIELVKZ7MOLQVR2xcDDW8krI8JarGi", "joFkGrrXV5IcKKYc2FniZixY9gLazREExLaERkL0");
 
    var AlarmObject = Parse.Object.extend("Alarm");
    var query = new Parse.Query(AlarmObject);
-   query.equalTo("userId", id);
+
    query.find({
       success: function(results) {
          if (results.length > 0) {
@@ -217,16 +137,6 @@ function getAllAlarms(id) {
    })
 }
 
-/**
-* Calls the helper method that handles the authentication flow.
-*
-* @param {Object} authResult An Object which contains the access token and
-*   other authentication information.
-*/
-function onSignInCallback(authResult) {
-   helper.onSignInCallback(authResult);
-}
-
 window.onload = function() {
    for (var hours = 1; hours <= 12; hours++) {
       $("#hours").append("<option>" + hours + "</option>");
@@ -237,11 +147,9 @@ window.onload = function() {
       $("#mins").append("<option>" + (mins < 10 ? "0" + mins : mins) + "</option>");
    };
 
-   //$('#disconnect').click(helper.disconnect);
-   //$('#loaderror').hide();  
-
    getTime();
    getTemp();
+   getAllAlarms();
 }
 
 
