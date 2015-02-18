@@ -10,7 +10,7 @@ function statusChangeCallback(response) {
       FB.api('/me', function(response) {
          console.log('Successful login for: ' + response.name + ' with id: ' + response.id);
          $("#loginStatus").empty();
-         document.getElementById('loginStatus').innerHTML = ("[<a href='' onmouseover='this.innerHTML = \"Log out\"' onmouseout='this.innerHTML = this.getAttribute(\"alt\")'' alt='Logged in' onclick='logout()'>Logged in</a> as " + response.name + "]");
+         document.getElementById('loginStatus').innerHTML = ("[<a href='' onmouseover='this.innerHTML = \"Log out\"' onmouseout='this.innerHTML = this.getAttribute(\"alt\")'' alt='Logged in' onclick='logout();return false;'>Logged in</a> as " + response.name + "]");
          $("#addAlarmBtn").show();
          $("#loginContainer").hide();
          getAllAlarms(response.id);
@@ -160,6 +160,7 @@ function addAlarm() {
 
    FB.getLoginStatus(function(response) {
       FB.api('/me', function(response) {
+         console.log(response);
          if (response.status === 'connected') {
             userID = response.id;
 
