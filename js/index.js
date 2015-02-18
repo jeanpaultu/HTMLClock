@@ -1,6 +1,5 @@
 // This is called with the results from from FB.getLoginStatus().
 function statusChangeCallback(response) {
-   console.log(response);
    // The response object is returned with a status field that lets the
    // app know the current login status of the person.
    // Full docs on the response object can be found in the documentation
@@ -8,7 +7,6 @@ function statusChangeCallback(response) {
    if (response.status === 'connected') {
       // Logged into your app and Facebook.
       FB.api('/me', function(response) {
-         console.log('Successful login for: ' + response.name + ' with id: ' + response.id);
          $("#loginStatus").empty();
          document.getElementById('loginStatus').innerHTML = ("[<a href='' onmouseover='this.innerHTML = \"Log out\"' onmouseout='this.innerHTML = this.getAttribute(\"alt\")'' alt='Logged in' onclick='logout();return false;'>Logged in</a> as " + response.name + "]");
          $("#addAlarmBtn").show();
