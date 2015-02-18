@@ -18,16 +18,25 @@
           // for FB.getLoginStatus().
           if (response.status === 'connected') {
             // Logged into your app and Facebook.
-            testAPI();
+            FB.api('/me', function(response) {
+            console.log('Successful login for: ' + response.name);
+            document.getElementById('loginStatus').innerHTML = '[Logged in as ' + response.name + ']';
+            $('#userId').value(response.userID);
+            $('#addAlarmBtn').show();
+            getAllAlarms(response.userID);
           } else if (response.status === 'not_authorized') {
             // The person is logged into Facebook, but not your app.
             document.getElementById('status').innerHTML = 'Please log ' +
               'into this app.';
+            $('#loginStatus').empty();
+            $('#addAlarmBtn').hide();
           } else {
             // The person is not logged into Facebook, so we're not sure if
             // they are logged into this app or not.
             document.getElementById('status').innerHTML = 'Please log ' +
               'into Facebook.';
+            $('#loginStatus').empty();
+            $('#addAlarmBtn').hide();
           }
          }
 
@@ -75,17 +84,6 @@
           js.src = "//connect.facebook.net/en_US/sdk.js";
           fjs.parentNode.insertBefore(js, fjs);
          }(document, 'script', 'facebook-jssdk'));
-
-         // Here we run a very simple test of the Graph API after login is
-         // successful.  See statusChangeCallback() for when this call is made.
-         function testAPI() {
-          console.log('Welcome!  Fetching your information.... ');
-          FB.api('/me', function(response) {
-            console.log('Successful login for: ' + response.name);
-            document.getElementById('status').innerHTML =
-              'Thanks for logging in, ' + response.name + '!';
-          });
-         }
       </script>
 
       <h1 class="title">JP's Clock</h1>
@@ -100,8 +98,11 @@
 
       <div id="alarmContainer">
          <div id="alarmHeader" class="flexable">
-            <div id="alarmHeading"><h2>Alarms</h2></div>
-            <input type="button" class="button" onclick="showAlarmPopup()" id="addAlarmBtn" value="Add Alarm" />
+            <div id="alarmHeading">
+               <h2 style="display:inline-block;">Alarms </h2>
+               <p id="loginStatus" style="display:inline"></p>
+            </div>
+            <input type="button" class="button" onclick="showAlarmPopup()" id="addAlarmBtn" value="Add Alarm" style="display:none;"/>
          </div>
 
          <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">

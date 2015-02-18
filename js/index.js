@@ -117,12 +117,12 @@ function addAlarm() {
     });
 }
 
-function getAllAlarms() {
+function getAllAlarms(userID) {
    Parse.initialize("0Y4EPzSgC2NIELVKZ7MOLQVR2xcDDW8krI8JarGi", "joFkGrrXV5IcKKYc2FniZixY9gLazREExLaERkL0");
 
    var AlarmObject = Parse.Object.extend("Alarm");
    var query = new Parse.Query(AlarmObject);
-
+   
    query.find({
       success: function(results) {
          if (results.length > 0) {
