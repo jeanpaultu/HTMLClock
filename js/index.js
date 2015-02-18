@@ -23,7 +23,7 @@ var helper = (function() {
           $('#gConnect').show();
           $('#alarmHeading').empty();
           $('#alarmHeading').append('<h2>Alarms</h2>');
-          $("#addAlarmBtn").addClass("hide");
+          $("#addAlarmBtn").hide();
           $("#alarms").empty();
         }
         console.log('authResult', authResult);
@@ -237,8 +237,8 @@ window.onload = function() {
       $("#mins").append("<option>" + (mins < 10 ? "0" + mins : mins) + "</option>");
    };
 
-   $('#disconnect').click(helper.disconnect);
-   $('#loaderror').hide();  
+   //$('#disconnect').click(helper.disconnect);
+   //$('#loaderror').hide();  
 
    getTime();
    getTemp();
