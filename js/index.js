@@ -21,6 +21,10 @@ var helper = (function() {
           $('#authResult').append('Logged out');
           $('#authOps').hide('slow');
           $('#gConnect').show();
+          $('#alarmHeading').empty();
+          $('#alarmHeading').append('<h2>Alarms</h2>');
+          $("#addAlarmBtn").addClass("hide");
+          $("#alarms").empty();
         }
         console.log('authResult', authResult);
       });
@@ -46,6 +50,7 @@ var helper = (function() {
           $('#authResult').empty();
           $('#gConnect').show();
           $("#addAlarmBtn").addClass("hide");
+          $("#alarms").empty();
         },
         error: function(e) {
           console.log(e);
@@ -62,8 +67,6 @@ var helper = (function() {
       }).then(function(res) {
         var profile = res.result;
         $('#alarmHeading').empty();
-        $('#alarmHeading').append(
-            $('<img src=\"' + profile.image.url + '\">'));
         $('#alarmHeading').append(
             $("<h2>" + profile.displayName + "'s Alarms</h2>"));
         $("#addAlarmBtn").removeClass("hide");
@@ -214,6 +217,16 @@ function getAllAlarms(id) {
    })
 }
 
+/**
+* Calls the helper method that handles the authentication flow.
+*
+* @param {Object} authResult An Object which contains the access token and
+*   other authentication information.
+*/
+function onSignInCallback(authResult) {
+   helper.onSignInCallback(authResult);
+}
+
 window.onload = function() {
    for (var hours = 1; hours <= 12; hours++) {
       $("#hours").append("<option>" + hours + "</option>");
@@ -231,15 +244,7 @@ window.onload = function() {
    getTemp();
 }
 
-/**
-* Calls the helper method that handles the authentication flow.
-*
-* @param {Object} authResult An Object which contains the access token and
-*   other authentication information.
-*/
-function onSignInCallback(authResult) {
-   helper.onSignInCallback(authResult);
-}
+
 
 
 
