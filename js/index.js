@@ -159,9 +159,8 @@ function addAlarm() {
    var alarmObject = new AlarmObject();
 
    FB.getLoginStatus(function(response) {
-      FB.api('/me', function(response) {
-         console.log(response);
-         if (response.status === 'connected') {
+      if (response.status === 'connected') {
+         FB.api('/me', function(response) {         
             userID = response.id;
 
             alarmObject.save({"time": time,"alarmName": alarmName, "userID": userID}, {
@@ -171,13 +170,11 @@ function addAlarm() {
                   $("#noAlarms").remove();
                }
              });
-         }
-         else 
-            alert("Not logged in!");
-      });
+         });
+      }
+      else 
+         alert("Not logged in!");      
    });
-
-   
 }
 
 function getAllAlarms(userID) {
