@@ -10,7 +10,7 @@ function statusChangeCallback(response) {
       FB.api('/me', function(response) {
          console.log('Successful login for: ' + response.name + ' with id: ' + response.id);
          $("#loginStatus").empty();
-         document.getElementById('loginStatus').innerHTML = '[Logged in as ' + response.name + ']';
+         document.getElementById('loginStatus').innerHTML = '[<a href="" onmouseover="this.innerHTML = ''Log out''" onmouseout="this.innerHTML = this.getAttribute(''alt'')" alt="Logged in" onclick="logout()">Logged in</a> as ' + response.name + ']';
          $("#addAlarmBtn").show();
          $("#loginContainer").hide();
          getAllAlarms(response.id);
@@ -21,6 +21,7 @@ function statusChangeCallback(response) {
       document.getElementById('loginStatus').innerHTML = '[Not logged in]';
       $("#addAlarmBtn").hide();
       $("#loginContainer").show();
+      $("#alarms").empty();
    } else {
       // The person is not logged into Facebook, so we're not sure if
       // they are logged into this app or not.
@@ -28,6 +29,7 @@ function statusChangeCallback(response) {
       document.getElementById('loginStatus').innerHTML = '[Not logged in]';
       $("#addAlarmBtn").hide();
       $("#loginContainer").show();
+      $("#alarms").empty();
    }
 }
 
@@ -36,8 +38,14 @@ function statusChangeCallback(response) {
 // code below.
 function checkLoginState() {
    FB.getLoginStatus(function(response) {
-   statusChangeCallback(response);
+      statusChangeCallback(response);
    });
+}
+
+function logout() {
+   FB.logout(function(response)) {
+      statusChangeCallback(response);
+   }
 }
 
 function getTime() {
@@ -145,17 +153,30 @@ function addAlarm() {
    var ampm = $("#ampm option:selected").text();
    var alarmName = $("#alarmName").val();
    var time = hours + ":" + mins + " " + ampm;
+   var userID = '';
 
    var AlarmObject = Parse.Object.extend("Alarm");
    var alarmObject = new AlarmObject();
 
-   alarmObject.save({"time": time,"alarmName": alarmName}, {
-      success: function(object) {
-         insertAlarm(time, alarmName, object.id);
-         hideAlarmPopup();
-         $("#noAlarms").remove();
-      }
-    });
+   FB.getLoginStatus(function(response) {
+      FB.api('/me', function(response) {
+         if (response.status === 'connected') {
+            userID = response.id;
+
+            alarmObject.save({"time": time,"alarmName": alarmName, "userID": userID}, {
+               success: function(object) {
+                  insertAlarm(time, alarmName, object.id);
+                  hideAlarmPopup();
+                  $("#noAlarms").remove();
+               }
+             });
+         }
+         else 
+            alert("Not logged in!");
+      });
+   });
+
+   
 }
 
 function getAllAlarms(userID) {
