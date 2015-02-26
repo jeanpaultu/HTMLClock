@@ -130,7 +130,7 @@ function deleteAlarm(objectId) {
    var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-60152014-1']);
 
-   _gaq.push(['_trackEvent', 'Alarm,' 'Delete']);
+   _gaq.push(['_trackEvent', 'Alarm', 'Delete']);
 
    query.get(objectId, {
       success: function(alarmObject) {
@@ -158,7 +158,7 @@ function addAlarm() {
    var userID = '';
    var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-60152014-1']);
-      _gaq.push(['_trackEvent', 'Alarm,' 'Add']);
+      _gaq.push(['_trackEvent', 'Alarm', 'Add']);
 
    var AlarmObject = Parse.Object.extend("Alarm");
    var alarmObject = new AlarmObject();
