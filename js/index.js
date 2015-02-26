@@ -128,6 +128,8 @@ function deleteAlarm(objectId) {
    var AlarmObject = Parse.Object.extend("Alarm");
    var query = new Parse.Query(AlarmObject);
 
+   ga('send', 'event', 'Alarm', 'Delete');
+
    query.get(objectId, {
       success: function(alarmObject) {
          alarmObject.destroy({
@@ -152,6 +154,8 @@ function addAlarm() {
    var alarmName = $("#alarmName").val();
    var time = hours + ":" + mins + " " + ampm;
    var userID = '';
+
+   ga('send', 'event', 'Alarm', 'Add');
 
    var AlarmObject = Parse.Object.extend("Alarm");
    var alarmObject = new AlarmObject();
