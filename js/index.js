@@ -127,6 +127,8 @@ function insertAlarm(time, alarmName, objectId) {
 function deleteAlarm(objectId) {
    var AlarmObject = Parse.Object.extend("Alarm");
    var query = new Parse.Query(AlarmObject);
+   var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-60152014-1']);
 
    _gaq.push(['_trackEvent', 'Alarm,' 'Delete']);
 
@@ -154,8 +156,9 @@ function addAlarm() {
    var alarmName = $("#alarmName").val();
    var time = hours + ":" + mins + " " + ampm;
    var userID = '';
-
-   _gaq.push(['_trackEvent', 'Alarm,' 'Add']);
+   var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-60152014-1']);
+      _gaq.push(['_trackEvent', 'Alarm,' 'Add']);
 
    var AlarmObject = Parse.Object.extend("Alarm");
    var alarmObject = new AlarmObject();
