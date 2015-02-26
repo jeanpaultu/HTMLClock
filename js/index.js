@@ -9,7 +9,7 @@ function statusChangeCallback(response) {
       FB.api('/me', function(response) {
          $("#loginStatus").empty();
          document.getElementById('loginStatus').innerHTML = ("[<a href='' onmouseover='this.innerHTML = \"Log out\"' onmouseout='this.innerHTML = this.getAttribute(\"alt\")'' alt='Logged in' onclick='logout();return false;'>Logged in</a> as " + response.name + "]");
-         $("#addAlarmBtn").show();
+         //$("#addAlarmBtn").show();
          $("#loginContainer").hide();
          getAllAlarms(response.id);
       });
@@ -17,7 +17,7 @@ function statusChangeCallback(response) {
       // The person is logged into Facebook, but not your app.
       $("#loginStatus").empty();
       document.getElementById('loginStatus').innerHTML = '[Not logged in]';
-      $("#addAlarmBtn").hide();
+      //$("#addAlarmBtn").hide();
       $("#loginContainer").show();
       $("#alarms").empty();
    } else {
@@ -25,7 +25,7 @@ function statusChangeCallback(response) {
       // they are logged into this app or not.
       $("#loginStatus").empty();
       document.getElementById('loginStatus').innerHTML = '[Not logged in]';
-      $("#addAlarmBtn").hide();
+      //$("#addAlarmBtn").hide();
       $("#loginContainer").show();
       $("#alarms").empty();
    }
@@ -206,7 +206,7 @@ window.onload = function() {
       $("#mins").append("<option>" + (mins < 10 ? "0" + mins : mins) + "</option>");
    };
 
-   $("#addAlarmBtn").hide();
+   //$("#addAlarmBtn").hide();
 
    getTime();
    getTemp();
