@@ -119,7 +119,7 @@ function insertAlarm(time, alarmName, objectId) {
 
    div.append("<div class='alarm name'>" + alarmName + "</div>");
    div.append("<div class='alarm time'>" + time + "</div>");
-   div.append("<input type='button' class='button deletebtn' onclick='deleteAlarm(this.id); ga('send', 'event', 'Alarm', 'Delete');' value='Delete' id='" + objectId + "'/>")
+   div.append("<input type='button' class='button deletebtn' onclick='deleteAlarm(this.id);' value='Delete' id='" + objectId + "'/>")
 
    $("#alarms").append(div);
 }
@@ -127,6 +127,8 @@ function insertAlarm(time, alarmName, objectId) {
 function deleteAlarm(objectId) {
    var AlarmObject = Parse.Object.extend("Alarm");
    var query = new Parse.Query(AlarmObject);
+
+   _gaq.push(['_trackEvent', 'Alarm,' 'Delete']);
 
    query.get(objectId, {
       success: function(alarmObject) {
@@ -153,7 +155,7 @@ function addAlarm() {
    var time = hours + ":" + mins + " " + ampm;
    var userID = '';
 
-   
+   _gaq.push(['_trackEvent', 'Alarm,' 'Add']);
 
    var AlarmObject = Parse.Object.extend("Alarm");
    var alarmObject = new AlarmObject();
