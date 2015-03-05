@@ -7,7 +7,7 @@
    </head>
    <body>
       <h1>My app</h1>
-      <button type="button" onclick="login();">Login</button>
+      <button id="loginBtn" type="button" onclick="login();">Login with Imgur</button>
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
    </body>
@@ -20,6 +20,8 @@
 
          if(window.localStorage.getItem('access_token') != null)
             callback();
+         else
+            $("#loginBtn").show();
       }
 
       function callback() {
@@ -30,10 +32,9 @@
             },
             type: 'GET',
             success: function(data) {
-               console.log("HELLO AGAIN");
-               console.log(data);
-               console.log(data['data']['url']);
+               $("#loginBtn").hide();
                alert("Hello " + data['data']['url']);
+
             }
          });
       }
