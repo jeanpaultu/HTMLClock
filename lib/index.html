@@ -18,9 +18,7 @@
          var data = {'client_id':'b21682a8aa3153a', 'type':'token', 'callback_function': 'showPopup'};
          init(data);
 
-         if(window.localStorage.getItem('access_token') != null)
-            callback();
-         else
+         if(window.localStorage.getItem('access_token') == null)
             $("#loginBtn").show();
       }
 
